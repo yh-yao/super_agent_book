@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from langchain_openai import OpenAIEmbeddings
+from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from loader import load_docs, chunk_docs
 

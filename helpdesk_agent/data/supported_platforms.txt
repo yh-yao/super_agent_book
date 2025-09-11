@@ -1,0 +1,2 @@
+Supported platforms:
+- Windows, macOS, Linux, iOS, Android.

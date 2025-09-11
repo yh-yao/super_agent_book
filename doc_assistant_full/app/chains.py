@@ -1,4 +1,5 @@
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import FAISS

@@ -1,0 +1,4 @@
+Troubleshooting common issues:
+- Restart your device.
+- Check your internet connection.
+- Clear browser cache and cookies.

@@ -1,0 +1,17 @@
+# Ignore Python cache and environment files
+__pycache__/
+.env
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+*.log
+*.env.*
+.envrc
+
+# VS Code
+.vscode/
+
+# MacOS
+.DS_Store
