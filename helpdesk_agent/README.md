@@ -34,14 +34,9 @@
    uvicorn app.main:app --reload --port 8000
    ```
 
-7. 调用示例：
-   ```bash
-   curl -X POST http://127.0.0.1:8000/chat      -H "Content-Type: application/json"      -d '{"session_id":"s1","user_id":"u42","query":"发票要如何开具？"}'
-   ```
-   
-更多示例
+## 调用示例：
 
-## 1. 能从 data 找到答案的问答
+### 1. 能从 data 找到答案的问答
 ```bash
 curl -X POST http://127.0.0.1:8000/chat \
    -H "Content-Type: application/json" \
@@ -52,7 +47,7 @@ curl -X POST http://127.0.0.1:8000/chat \
 {"intent":"FAQ","answer":"我们的服务时间是周一至周五，上午9点至下午6点（当地时间）【1】。如果您有其他问题或需要进一步的帮助，请随时联系支持团队。","ticket_id":null,"meta":{}}
 ```
 
-## 2. 未命中知识库时的问答
+### 2. 未命中知识库时的问答
 ```bash
 curl -X POST http://127.0.0.1:8000/chat \
    -H "Content-Type: application/json" \
@@ -63,7 +58,7 @@ curl -X POST http://127.0.0.1:8000/chat \
 {"intent":"FAQ","answer":"很抱歉，检索结果中没有关于发票开具的具体信息。如果您需要详细的发票开具流程，建议您转工单或直接联系相关支持部门。您可以通过发送邮件至 support@helpdesk.com 或拨打 1-800-555-1234 来获取帮助。","ticket_id":null,"meta":{}}
 ```
 
-## 3. 反馈接口（feedback）
+### 3. 反馈接口（feedback）
 ```bash
 curl -X POST http://127.0.0.1:8000/feedback \
    -H "Content-Type: application/json" \
@@ -74,4 +69,15 @@ curl -X POST http://127.0.0.1:8000/feedback \
 {"ok": true}
 ```
 反馈结果仅为 {"ok": true}，用于记录用户评分和评论。
+
+### 4. 创建工单（触发 create_or_update_ticket）
+```bash
+curl -X POST http://127.0.0.1:8000/chat \
+   -H "Content-Type: application/json" \
+   -d '{"session_id":"s3","user_id":"u100","query":"我无法登录账号，请帮我创建一个工单"}'
+```
+返回内容示例：
+```json
+{"intent":"TICKET","answer":"已为你创建工单 51fb8504（状态：open），我们会尽快处理。","ticket_id":"51fb8504","meta":{}}
+```
    
