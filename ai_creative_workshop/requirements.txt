@@ -1,0 +1,7 @@
+langchain
+openai
+torch
+diffusers
+transformers
+accelerate
+safetensors
