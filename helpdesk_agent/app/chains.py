@@ -17,7 +17,7 @@ def build_intent_chain(labels=("FAQ","TICKET","COMPLAINT","ESCALATION")):
 
 def build_rag_chain(index_name:str):
     retriever = PineconeVectorStore.from_existing_index(
-        index_name=index_name, embedding=OpenAIEmbeddings(model="text-embedding-3-large")
+        index_name=index_name, embedding=OpenAIEmbeddings(model="text-embedding-3-small", dimensions=512)
     ).as_retriever(search_kwargs={"k":4})
     RAG_PROMPT = ChatPromptTemplate.from_messages([
         ("system", "你是企业FAQ助手。结合检索到的片段逐条引用出处进行回答。若无依据则坦诚告知并建议转工单。"),

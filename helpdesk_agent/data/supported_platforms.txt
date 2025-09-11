@@ -1,2 +1,2 @@
-Supported platforms:
-- Windows, macOS, Linux, iOS, Android.
+支持的平台：
+- Windows、macOS、Linux、iOS、Android。

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from app.router_schemas import ChatRequest, ChatResponse, FeedbackRequest
 from app.chains import build_router
 from app.tools import create_or_update_ticket

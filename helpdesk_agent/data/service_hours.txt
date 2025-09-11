@@ -1,2 +1,2 @@
-Service hours:
-- Monday to Friday, 9am to 6pm (local time).
+服务时间：
+- 周一至周五，上午9点至下午6点（当地时间）。

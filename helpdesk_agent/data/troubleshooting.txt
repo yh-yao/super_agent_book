@@ -1,4 +1,4 @@
-Troubleshooting common issues:
-- Restart your device.
-- Check your internet connection.
-- Clear browser cache and cookies.
+常见问题排查：
+- 重启您的设备。
+- 检查您的网络连接。
+- 清除浏览器缓存和 Cookie。
