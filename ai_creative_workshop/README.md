@@ -6,7 +6,9 @@
 - 校对Agent（文案优化与审查）
 
 ## 使用方法
+
 ```bash
 pip install -r requirements.txt
-python main.py
+export OPENAI_API_KEY="your-openai-api-key"
+python main.py --product "夏日柠檬饮料" --audience "年轻人"
 ```

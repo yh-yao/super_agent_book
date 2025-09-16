@@ -1,12 +1,13 @@
-from langchain import OpenAI, LLMChain, PromptTemplate
+from langchain_openai import OpenAI
+from langchain.prompts import PromptTemplate
 
 class ReviewerAgent:
     def __init__(self, model="gpt-4o-mini"):
         self.llm = OpenAI(model=model)
         self.template = PromptTemplate.from_template(
-            "请检查以下文案是否简洁有力并符合年轻人风格。如果需要，请优化。\n\n文案: {text}"
+            "优化这个广告文案使其更适合年轻人：{text}\n\n只输出最终优化后的一句话，不超过15个字，不要解释过程。"
         )
-        self.chain = LLMChain(llm=self.llm, prompt=self.template)
+        self.chain = self.template | self.llm
 
     def run(self, text):
-        return self.chain.run(text=text)
+        return self.chain.invoke({"text": text})

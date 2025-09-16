@@ -1,7 +1,5 @@
 langchain
+langchain-openai
+langchain-community
 openai
-torch
-diffusers
-transformers
-accelerate
-safetensors
+requests
