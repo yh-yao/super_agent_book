@@ -1,0 +1,6 @@
+pandas
+numpy
+matplotlib
+langchain
+langgraph
+openai
