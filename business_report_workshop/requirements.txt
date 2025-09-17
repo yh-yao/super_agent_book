@@ -1,5 +1,0 @@
-langchain
-openai
-torch
-pandas
-matplotlib
