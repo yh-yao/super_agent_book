@@ -1,0 +1,58 @@
+Metadata-Version: 2.4
+Name: smartcoder-agent
+Version: 0.1.1
+Summary: Step-by-step code analysis and editing agent (pure stdlib).
+Author: ChatGPT Assistant
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# SmartCoder Agent
+
+A **step-by-step** code analysis and editing agent you can run **locally** from the command line.
+It accepts a **code snippet**, a **file**, a **directory**, or even a **zip file**. It produces a transparent
+plan → edit → verify flow and writes a detailed log with diffs.
+
+- No external dependencies (pure Python stdlib).
+- Optional LLM: If `OPENAI_API_KEY` is set, planning can be enhanced via `smartcoder.llm` (HTTPS). The tool works without it.
+- Deterministic edits for Python via AST/tokenize (rename function, add logging, replace `print`, fix mutable defaults).
+- Dry-run by default (prints diffs). Use `--apply` to write changes.
+- Automatic workspace for zips/snippets.
+
+## Quick Start
+
+```bash
+unzip smartcoder-agent.zip
+cd smartcoder-agent
+python -m pip install -e .
+
+# analyze
+smartcoder analyze ./examples/demo_project -o analysis_report.md
+
+# plan
+smartcoder plan -p ./examples/demo_project -i "Add logging to all functions and replace print with logging"
+
+# edit (dry-run first)
+smartcoder edit -p ./examples/demo_project -i "add logging & replace print"
+
+# edit (apply)
+smartcoder edit -p ./examples/demo_project -i "add logging & replace print" --apply
+
+# verify
+smartcoder verify -p ./examples/demo_project
+```
+
+## Supported inputs
+- Snippet: `smartcoder analyze --code "print('hello')"`
+- File / Dir / Zip
+
+## Python edits
+- Add `logging` to function entries
+- Replace `print(...)` with `logging.info(...)`
+- Rename identifier safely (token-aware)
+- Fix mutable default arguments `[]` / `{}` → `None` + guarded init
+
+JS/TS analysis is heuristic-only; edits target Python.
+
+Full logs are stored under `.smartcoder/logs` inside your workspace.
