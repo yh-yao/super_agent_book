@@ -1,0 +1,84 @@
+{
+  "students": {
+    "xiaoming": {
+      "user_id": "xiaoming",
+      "name": "小明",
+      "level": "A1",
+      "skills": {
+        "grammar:present-simple": {
+          "correct": 2,
+          "wrong": 3,
+          "mastery": 0.25,
+          "difficulty_bias": 0.15,
+          "next_review": "2024-09-17T08:30:45"
+        },
+        "vocab:daily": {
+          "correct": 1,
+          "wrong": 4,
+          "mastery": 0.18,
+          "difficulty_bias": 0.22,
+          "next_review": "2024-09-17T06:15:22"
+        },
+        "grammar:articles": {
+          "correct": 3,
+          "wrong": 2,
+          "mastery": 0.35,
+          "difficulty_bias": 0.08,
+          "next_review": "2024-09-18T10:20:30"
+        }
+      },
+      "history": [
+        {
+          "qid": "q1",
+          "ts": "2024-09-16T14:20:15",
+          "is_correct": false,
+          "cefr": "A1",
+          "tags": ["grammar:present-simple"],
+          "difficulty": 0.2,
+          "user_answer": 0,
+          "correct_answer": 1
+        },
+        {
+          "qid": "q2",
+          "ts": "2024-09-16T14:22:30",
+          "is_correct": false,
+          "cefr": "A1", 
+          "tags": ["vocab:daily"],
+          "difficulty": 0.15,
+          "user_answer": "book",
+          "correct_answer": "pen"
+        },
+        {
+          "qid": "q1",
+          "ts": "2024-09-16T15:10:45",
+          "is_correct": true,
+          "cefr": "A1",
+          "tags": ["grammar:present-simple"],
+          "difficulty": 0.2,
+          "user_answer": 1,
+          "correct_answer": 1
+        },
+        {
+          "qid": "q7",
+          "ts": "2024-09-16T15:12:20",
+          "is_correct": false,
+          "cefr": "A1",
+          "tags": ["grammar:articles"],
+          "difficulty": 0.25,
+          "user_answer": "a",
+          "correct_answer": "the"
+        },
+        {
+          "qid": "q2",
+          "ts": "2024-09-16T15:45:10",
+          "is_correct": true,
+          "cefr": "A1",
+          "tags": ["vocab:daily"],
+          "difficulty": 0.15,
+          "user_answer": "pen",
+          "correct_answer": "pen"
+        }
+      ]
+    }
+  }
+}

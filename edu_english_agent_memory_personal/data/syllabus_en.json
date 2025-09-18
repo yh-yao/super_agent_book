@@ -1,0 +1,10 @@
+{
+  "items": [
+    { "id": "vocab-a1-basic", "title": "Basic daily vocabulary", "cefr": "A1", "tags": ["vocab:daily"], "prereq": [] },
+    { "id": "grammar-a1-present", "title": "Present simple", "cefr": "A1", "tags": ["grammar:present-simple"], "prereq": [] },
+    { "id": "vocab-a2-routine", "title": "Routine & time", "cefr": "A2", "tags": ["vocab:routine"], "prereq": ["vocab-a1-basic"] },
+    { "id": "grammar-a2-past", "title": "Past simple", "cefr": "A2", "tags": ["grammar:past-simple"], "prereq": ["grammar-a1-present"] },
+    { "id": "grammar-b1-cont", "title": "Present continuous", "cefr": "B1", "tags": ["grammar:present-cont"], "prereq": ["grammar-a1-present"] },
+    { "id": "vocab-b1-travel", "title": "Travel vocabulary", "cefr": "B1", "tags": ["vocab:travel"], "prereq": ["vocab-a2-routine"] }
+  ]
+}

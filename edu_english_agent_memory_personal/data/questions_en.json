@@ -1,0 +1,64 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "stem": "Choose the correct form: He ___ to school every day.",
+      "options": ["go", "goes", "going", "gone"],
+      "answer": 1,
+      "explain": "Present simple: he/she/it + verb-(e)s → goes.",
+      "cefr": "A1",
+      "tags": ["grammar:present-simple"],
+      "difficulty": 0.2
+    },
+    {
+      "id": "q2",
+      "stem": "Fill in a daily object in English that you use to write.",
+      "options": null,
+      "answer": "pen",
+      "explain": "Basic daily vocab: pen/pencil are acceptable; we expect 'pen' here.",
+      "cefr": "A1",
+      "tags": ["vocab:daily"],
+      "difficulty": 0.15
+    },
+    {
+      "id": "q3",
+      "stem": "Choose the correct past form: Yesterday I ___ to the park.",
+      "options": ["go", "goes", "went", "gone"],
+      "answer": 2,
+      "explain": "Past simple of 'go' is 'went'.",
+      "cefr": "A2",
+      "tags": ["grammar:past-simple"],
+      "difficulty": 0.4
+    },
+    {
+      "id": "q4",
+      "stem": "Choose the best word: I usually ___ up at 7 a.m.",
+      "options": ["wake", "wakes", "waking", "woke"],
+      "answer": 0,
+      "explain": "First person singular in present simple: 'I wake up'.",
+      "cefr": "A2",
+      "tags": ["vocab:routine","grammar:present-simple"],
+      "difficulty": 0.35
+    },
+    {
+      "id": "q5",
+      "stem": "Choose the correct form: She is ___ a book now.",
+      "options": ["read", "reads", "reading", "to read"],
+      "answer": 2,
+      "explain": "Present continuous: be + verb-ing → is reading.",
+      "cefr": "B1",
+      "tags": ["grammar:present-cont"],
+      "difficulty": 0.55
+    },
+    {
+      "id": "q6",
+      "stem": "Travel vocab: The place where airplanes take off is called an ____.",
+      "options": null,
+      "answer": "airport",
+      "explain": "Basic travel vocabulary.",
+      "cefr": "B1",
+      "tags": ["vocab:travel"],
+      "difficulty": 0.5
+    }
+  ]
+}

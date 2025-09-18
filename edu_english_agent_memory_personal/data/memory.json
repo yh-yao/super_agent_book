@@ -1,0 +1,32 @@
+{
+  "students": {
+    "lihua": {
+      "user_id": "lihua",
+      "name": "Alice",
+      "level": "A1",
+      "skills": {
+        "grammar:present-simple": {
+          "correct": 1,
+          "wrong": 0,
+          "mastery": 0.2,
+          "difficulty_bias": 0.015,
+          "next_review": "2025-09-20T04:43:47"
+        }
+      },
+      "history": [
+        {
+          "qid": "q1",
+          "ts": "2025-09-17T23:55:47",
+          "is_correct": true,
+          "cefr": "A1",
+          "tags": [
+            "grammar:present-simple"
+          ],
+          "difficulty": 0.2,
+          "user_answer": 1,
+          "correct_answer": 1
+        }
+      ]
+    }
+  }
+}

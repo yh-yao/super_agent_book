@@ -1,0 +1,9 @@
+fastapi==0.112.2
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+python-dotenv==1.0.1
+openai==1.44.0
+sentence-transformers==3.0.1
+faiss-cpu==1.8.0.post1
+tiktoken==0.7.0
+orjson==3.10.7

@@ -1,0 +1,135 @@
+{
+  "students": {
+    "lihua": {
+      "user_id": "lihua",
+      "name": "李华",
+      "level": "B2",
+      "skills": {
+        "grammar:conditionals": {
+          "correct": 8,
+          "wrong": 2,
+          "mastery": 0.84,
+          "difficulty_bias": -0.12,
+          "next_review": "2024-09-22T10:45:30"
+        },
+        "vocab:academic": {
+          "correct": 12,
+          "wrong": 3,
+          "mastery": 0.79,
+          "difficulty_bias": -0.08,
+          "next_review": "2024-09-21T14:20:15"
+        },
+        "grammar:present-perfect": {
+          "correct": 6,
+          "wrong": 2,
+          "mastery": 0.75,
+          "difficulty_bias": -0.05,
+          "next_review": "2024-09-20T16:30:00"
+        },
+        "vocab:business": {
+          "correct": 9,
+          "wrong": 4,
+          "mastery": 0.72,
+          "difficulty_bias": 0.02,
+          "next_review": "2024-09-19T09:15:45"
+        },
+        "grammar:passive-voice": {
+          "correct": 7,
+          "wrong": 3,
+          "mastery": 0.68,
+          "difficulty_bias": -0.03,
+          "next_review": "2024-09-20T11:25:20"
+        },
+        "vocab:travel": {
+          "correct": 5,
+          "wrong": 3,
+          "mastery": 0.65,
+          "difficulty_bias": 0.05,
+          "next_review": "2024-09-18T15:40:35"
+        }
+      },
+      "history": [
+        {
+          "qid": "q15",
+          "ts": "2024-09-15T09:20:15",
+          "is_correct": true,
+          "cefr": "B2",
+          "tags": ["grammar:conditionals"],
+          "difficulty": 0.72,
+          "user_answer": 2,
+          "correct_answer": 2
+        },
+        {
+          "qid": "q23",
+          "ts": "2024-09-15T09:25:30",
+          "is_correct": true,
+          "cefr": "B2",
+          "tags": ["vocab:academic"],
+          "difficulty": 0.68,
+          "user_answer": "hypothesis",
+          "correct_answer": "hypothesis"
+        },
+        {
+          "qid": "q18",
+          "ts": "2024-09-15T10:15:45",
+          "is_correct": false,
+          "cefr": "B2",
+          "tags": ["grammar:present-perfect"],
+          "difficulty": 0.75,
+          "user_answer": 1,
+          "correct_answer": 3
+        },
+        {
+          "qid": "q31",
+          "ts": "2024-09-15T10:45:20",
+          "is_correct": true,
+          "cefr": "B2",
+          "tags": ["vocab:business"],
+          "difficulty": 0.71,
+          "user_answer": "quarterly",
+          "correct_answer": "quarterly"
+        },
+        {
+          "qid": "q27",
+          "ts": "2024-09-15T11:20:35",
+          "is_correct": true,
+          "cefr": "B2",
+          "tags": ["grammar:passive-voice"],
+          "difficulty": 0.69,
+          "user_answer": 0,
+          "correct_answer": 0
+        },
+        {
+          "qid": "q6",
+          "ts": "2024-09-15T14:30:10",
+          "is_correct": false,
+          "cefr": "B1",
+          "tags": ["vocab:travel"],
+          "difficulty": 0.5,
+          "user_answer": "station",
+          "correct_answer": "airport"
+        },
+        {
+          "qid": "q42",
+          "ts": "2024-09-16T09:15:25",
+          "is_correct": true,
+          "cefr": "C1",
+          "tags": ["grammar:conditionals"],
+          "difficulty": 0.85,
+          "user_answer": 2,
+          "correct_answer": 2
+        },
+        {
+          "qid": "q38",
+          "ts": "2024-09-16T09:45:40",
+          "is_correct": true,
+          "cefr": "B2",
+          "tags": ["vocab:academic"],
+          "difficulty": 0.73,
+          "user_answer": "methodology",
+          "correct_answer": "methodology"
+        }
+      ]
+    }
+  }
+}
