@@ -1,0 +1,21 @@
+id: ccpa_core_rights
+title: CCPA/CPRA core consumer rights and duties
+jurisdiction: US-CA
+effective_from: 2020-01-01
+controls:
+  - id: right_to_know
+    requirement: "Provide right to know categories and specific pieces of personal information collected"
+    evidence: ["Privacy policy", "DSAR portal", "Data inventory"]
+    risk_weight: 0.6
+    references:
+      - law: "CCPA/CPRA"
+        section: "1798.110"
+        url: "https://oag.ca.gov/privacy/ccpa"
+  - id: right_to_delete
+    requirement: "Provide right to delete personal information subject to exceptions"
+    evidence: ["Deletion SOP", "Data retention schedule"]
+    risk_weight: 0.6
+    references:
+      - law: "CCPA/CPRA"
+        section: "1798.105"
+        url: "https://oag.ca.gov/privacy/ccpa"

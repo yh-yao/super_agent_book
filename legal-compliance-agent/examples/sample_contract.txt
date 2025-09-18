@@ -1,0 +1,7 @@
+Master Services Agreement
+
+1. Governing Law: The laws of California, without regard to conflicts of laws, shall govern.
+2. Data Protection: The Processor shall implement technical and organizational measures appropriate to the risk.
+3. Breach Notification: Processor shall notify Controller without undue delay and no later than 72 hours after becoming aware of a Personal Data Breach.
+4. Liability Cap: Aggregate liability shall not exceed USD 100,000.
+5. Subprocessors: Processor must obtain Controller's written authorization before engaging subprocessors.

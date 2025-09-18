@@ -1,4 +1,0 @@
-langchain
-openai
-torch
-faiss-cpu

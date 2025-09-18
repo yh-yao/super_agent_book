@@ -1,0 +1,21 @@
+id: gdpr_art_30_records
+title: Records of processing activities
+jurisdiction: EU
+effective_from: 2018-05-25
+controls:
+  - id: rpa_inventory
+    requirement: "Maintain Records of Processing Activities per GDPR Art.30"
+    evidence: ["RPA registry", "Data map", "Processor contracts"]
+    risk_weight: 0.7
+    references:
+      - law: "GDPR"
+        article: "Art.30"
+        url: "https://gdpr.eu/article-30/"
+  - id: breach_notification
+    requirement: "Notify supervisory authority of personal data breach within 72 hours unless unlikely to result in risk"
+    evidence: ["Incident runbook", "Notification templates", "DPO approvals"]
+    risk_weight: 0.9
+    references:
+      - law: "GDPR"
+        article: "Art.33"
+        url: "https://gdpr.eu/article-33/"

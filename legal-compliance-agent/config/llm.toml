@@ -1,0 +1,4 @@
+# Simple key-value (TOML-like comments)
+model = "gpt-4o-mini"
+temperature = 0.2
+max_tokens = 700

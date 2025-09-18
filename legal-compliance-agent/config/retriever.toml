@@ -1,0 +1,3 @@
+top_k = 6
+chunk_size = 700
+chunk_overlap = 100

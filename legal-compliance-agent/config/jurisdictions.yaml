@@ -1,0 +1,8 @@
+defaults:
+  language: en
+  timezone: UTC
+jurisdictions:
+  - code: EU
+    name: European Union
+  - code: US-CA
+    name: California, United States

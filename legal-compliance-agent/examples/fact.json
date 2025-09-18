@@ -1,0 +1,21 @@
+{
+  "org": "Acme Inc.",
+  "jurisdiction": [
+    "EU",
+    "US-CA"
+  ],
+  "processes": [
+    {
+      "purpose": "behavioral advertising",
+      "data_categories": [
+        "online_identifiers",
+        "location"
+      ],
+      "sensitive": false,
+      "cross_border": [
+        "EU->US"
+      ],
+      "retention_months": 24
+    }
+  ]
+}
