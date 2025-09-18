@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smartcoder-agent"
+version = "0.1.1"
+description = "Step-by-step code analysis and editing agent (pure stdlib)."
+authors = [{name = "ChatGPT Assistant"}]
+readme = "README.md"
+requires-python = ">=3.9"
+
+[project.scripts]
+smartcoder = "smartcoder.cli:main"
