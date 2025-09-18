@@ -27,6 +27,146 @@
           "correct_answer": 1
         }
       ]
+    },
+    "s001": {
+      "user_id": "s001",
+      "name": "Alice",
+      "level": "A1",
+      "skills": {
+        "grammar:present-simple": {
+          "correct": 5,
+          "wrong": 3,
+          "mastery": 0.4773990400000001,
+          "difficulty_bias": -0.0075,
+          "next_review": "2025-09-20T02:21:34"
+        },
+        "vocab:routine": {
+          "correct": 1,
+          "wrong": 1,
+          "mastery": 0.2,
+          "difficulty_bias": -0.0075000000000000015,
+          "next_review": "2025-09-20T08:46:38"
+        },
+        "vocab:travel": {
+          "correct": 1,
+          "wrong": 0,
+          "mastery": 0.2,
+          "difficulty_bias": 0.0,
+          "next_review": "2025-09-20T08:46:56"
+        }
+      },
+      "history": [
+        {
+          "qid": "q1",
+          "ts": "2025-09-18T03:52:55",
+          "is_correct": true,
+          "cefr": "A1",
+          "tags": [
+            "grammar:present-simple"
+          ],
+          "difficulty": 0.2,
+          "user_answer": 1,
+          "correct_answer": 1
+        },
+        {
+          "qid": "generated_686d15c1",
+          "ts": "2025-09-18T03:56:38",
+          "is_correct": false,
+          "cefr": "A1",
+          "tags": [
+            "grammar:present-simple"
+          ],
+          "difficulty": 0.4,
+          "user_answer": 0,
+          "correct_answer": 1
+        },
+        {
+          "qid": "q1",
+          "ts": "2025-09-18T03:57:12",
+          "is_correct": true,
+          "cefr": "A1",
+          "tags": [
+            "grammar:present-simple"
+          ],
+          "difficulty": 0.2,
+          "user_answer": 1,
+          "correct_answer": 1
+        },
+        {
+          "qid": "generated_da9e44bd",
+          "ts": "2025-09-18T03:57:32",
+          "is_correct": true,
+          "cefr": "A2",
+          "tags": [
+            "grammar:present-simple"
+          ],
+          "difficulty": 0.4,
+          "user_answer": 1,
+          "correct_answer": 1
+        },
+        {
+          "qid": "q4",
+          "ts": "2025-09-18T03:58:17",
+          "is_correct": false,
+          "cefr": "A2",
+          "tags": [
+            "vocab:routine",
+            "grammar:present-simple"
+          ],
+          "difficulty": 0.35,
+          "user_answer": 1,
+          "correct_answer": 0
+        },
+        {
+          "qid": "generated_d01dc682",
+          "ts": "2025-09-18T03:58:33",
+          "is_correct": true,
+          "cefr": "A2",
+          "tags": [
+            "grammar:present-simple"
+          ],
+          "difficulty": 0.4,
+          "user_answer": 1,
+          "correct_answer": 1
+        },
+        {
+          "qid": "q4",
+          "ts": "2025-09-18T03:58:38",
+          "is_correct": true,
+          "cefr": "A2",
+          "tags": [
+            "vocab:routine",
+            "grammar:present-simple"
+          ],
+          "difficulty": 0.35,
+          "user_answer": 0,
+          "correct_answer": 0
+        },
+        {
+          "qid": "q6",
+          "ts": "2025-09-18T03:58:56",
+          "is_correct": true,
+          "cefr": "B1",
+          "tags": [
+            "vocab:travel"
+          ],
+          "difficulty": 0.5,
+          "user_answer": "airport",
+          "correct_answer": "airport"
+        },
+        {
+          "qid": "q1",
+          "ts": "2025-09-18T03:59:13",
+          "is_correct": false,
+          "cefr": "A1",
+          "tags": [
+            "grammar:present-simple"
+          ],
+          "difficulty": 0.2,
+          "user_answer": 0,
+          "correct_answer": 1
+        }
+      ]
     }
   }
 }
