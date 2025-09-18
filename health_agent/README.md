@@ -1,33 +1,182 @@
-# Health Agent (Compliance‑First RAG + LLM)
+# 健康智能助手 (合规优先的 RAG + LLM 系统)
 
-A reference **medical health assistant** focused on **compliance, safety, and explainability**.
-It provides retrieval‑augmented responses with **disclaimers, citations, and audit logs**.
-> ⚠️ Educational demo only. Not a medical device. Not a substitute for professional care.
+一个专注于**合规性、安全性和可解释性**的参考级**医疗健康助手**。
+它提供基于检索增强生成的响应，包含**免责声明、引用来源和审计日志**。
+> ⚠️ 仅供教育演示使用。非医疗设备。不能替代专业医疗护理。
 
-## Features
-- **RAG** over trusted local guidelines (e.g., sample clinical guideline snippets in `data/`)
-- **LLM** synthesis with explicit **disclaimer + scope control**
-- **Guardrails**: triage red‑flags, restricted claims, PHI de‑identification (basic), role‑based prompts
-- **Citations**: JSON evidence bundle returned to caller
-- **Audit log**: JSONL log with hashed user id + policy decisions
-- **FastAPI** server + simple CLI
+## 核心特性
 
-## Quickstart
+### 🔍 检索增强生成 (RAG)
+- 基于可信本地指南进行信息检索（如 `data/` 中的临床指南片段样本）
+- 使用向量数据库 (FAISS) 进行高效的语义搜索
+- 支持多种医疗文档格式和知识库
+
+### 🤖 LLM 合成响应
+- 明确的**免责声明 + 范围控制**
+- 基于 GPT-4 的智能响应生成
+- 结构化的提示工程，确保医疗场景下的安全性
+
+### 🛡️ 安全防护机制
+- **分诊红旗标识**：自动识别紧急医疗情况
+- **限制性声明控制**：防止超出系统能力范围的医疗建议
+- **个人健康信息 (PHI) 去标识化**：基础的隐私保护
+- **基于角色的提示控制**：确保系统始终保持助手角色
+
+### 📚 引用和追溯
+- **JSON 格式的证据包**：返回给调用者完整的引用信息
+- **来源标记**：每个建议都有明确的来源标识
+- **可追溯性**：确保所有建议都有可验证的依据
+
+### 📋 审计和合规
+- **JSONL 格式审计日志**：记录用户ID哈希值和策略决策
+- **完整的操作记录**：包括查询、响应和安全策略触发情况
+- **合规性追踪**：支持医疗机构的合规要求
+
+### 🌐 多种接口
+- **FastAPI 服务器**：RESTful API 接口
+- **命令行界面 (CLI)**：便于测试和开发
+- **结构化响应**：支持患者信息、症状描述等结构化输入
+
+## 快速开始
+
+### 环境准备
 ```bash
+# 创建虚拟环境
 python -m venv .venv && source .venv/bin/activate
+
+# 安装依赖
 pip install -r requirements.txt
-cp .env.example .env   # fill in your keys
-uvicorn app.main:app --reload
-# or run CLI
-python app/cli.py --question "持续胸痛并伴随出冷汗，该怎么办？"
+
+# 配置环境变量
+cp .env.example .env   # 填入您的 API 密钥
 ```
 
-## Environment
-Create `.env` from `.env.example`:
-- `OPENAI_API_KEY=`
-- `MODEL_NAME=gpt-4o-mini`
+### 启动服务
+```bash
+# 启动 FastAPI 服务器
+uvicorn app.main:app --reload
 
-## Important Notes
-- This code includes **safety blocks** to **refuse diagnosis** and suggest **seek-care pathways** when red‑flags appear.
-- You must replace `data/` with your institution’s vetted, licensed guidelines.
-- Add your own DPO/IRB/compliance reviews before deployment.
+# 使用cli.py访问
+python app/cli.py --question "我叫张三先生，身份证号码是123456789，手机号是13812345678，我现在头痛该怎么办？"
+```
+
+### API 使用示例
+```bash
+# 健康检查
+curl http://localhost:8000/healthz
+
+# 提问示例
+curl -X POST "http://localhost:8000/ask" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "question": "头痛伴随发烧该如何处理？",
+    "user_id": "user_123",
+    "patient": {
+      "age": 35,
+      "gender": "female",
+      "medical_history": ["高血压"]
+    }
+  }'
+```
+
+## 项目结构
+
+```
+health_agent/
+├── app/
+│   ├── __init__.py          # 包初始化
+│   ├── main.py              # FastAPI 主应用
+│   ├── cli.py               # 命令行界面
+│   ├── config.py            # 配置管理
+│   ├── models.py            # Pydantic 数据模型
+│   ├── rag.py               # 检索增强生成核心逻辑
+│   ├── llm.py               # LLM 交互接口
+│   ├── guardrails.py        # 安全防护机制
+│   ├── privacy.py           # 隐私保护功能
+│   ├── citations.py         # 引用管理
+│   ├── audit.py             # 审计日志
+│   ├── prompts.py           # 提示模板
+│   └── data/                # 医疗指南和知识库
+├── requirements.txt         # Python 依赖
+├── .env.example            # 环境变量模板
+└── README.md               # 项目文档
+```
+
+## 核心依赖
+
+- **FastAPI**: 现代、高性能的 Web 框架
+- **OpenAI**: GPT 模型 API 接口
+- **Sentence Transformers**: 文本嵌入和语义搜索
+- **FAISS**: 高效的向量相似度搜索
+- **Pydantic**: 数据验证和序列化
+- **Uvicorn**: ASGI 服务器
+
+## 技术架构详解
+
+### 系统流程图
+```
+用户输入 -> 隐私清洗 -> 安全防护 -> RAG检索 -> LLM生成 -> 引用标记 -> 审计记录 -> 返回结果
+```
+
+### 核心组件说明
+
+#### 1. 隐私保护模块 (`privacy.py`)
+- **PHI 检测**：识别和标记个人健康信息
+- **数据脱敏**：自动清理敏感信息
+- **匿名化处理**：用户ID哈希化
+
+#### 2. 安全防护模块 (`guardrails.py`)
+- **紧急情况识别**：胸痛、呼吸困难、意识不清等
+- **风险分级**：低风险、中风险、高风险分类
+- **自动转诊**：高风险情况自动建议就医
+
+#### 3. RAG 检索模块 (`rag.py`)
+- **文档索引**：医疗指南的向量化存储
+- **语义搜索**：基于查询相关性的文档检索
+- **上下文提取**：相关段落的智能提取
+
+#### 4. LLM 交互模块 (`llm.py`)
+- **提示优化**：医疗场景专用的提示模板
+- **响应控制**：确保输出符合医疗助手规范
+- **token 管理**：优化API调用成本
+
+## 安全和合规注意事项
+
+### ⚠️ 重要免责声明
+- 本代码包含**安全阻断机制**，会**拒绝诊断**并在出现红旗症状时建议**寻求医疗护理路径**
+- 您必须用您机构的**已审核、已授权指南**替换 `data/` 中的示例数据
+- 部署前必须添加您自己的 **DPO/IRB/合规性审查**
+
+### 🔒 隐私保护
+- 基础的个人健康信息 (PHI) 去标识化
+- 用户ID哈希化存储
+- 敏感信息过滤和清理
+
+### 🛡️ 安全机制
+- 紧急情况自动识别和转诊建议
+- 超出能力范围的查询自动拒绝
+- 医疗建议的明确范围限制
+
+### 📊 审计功能
+- 完整的查询和响应日志
+- 策略决策追踪
+- 合规性报告支持
+
+
+## 许可证和法律
+
+本项目仅供教育和研究目的。在任何医疗环境中使用前，请确保：
+- 符合当地医疗法规（如HIPAA、GDPR等）
+- 通过必要的合规审查（IRB、DPO等）
+- 获得适当的医疗许可
+- 遵守隐私保护法规
+- 进行充分的安全测试
+
+### 法律责任
+- 开发者和部署者负责确保合规性
+- 系统不提供诊断，仅提供教育信息
+- 用户需要寻求专业医疗建议
+
+---
+
+**再次提醒：这不是医疗设备，不能替代专业医疗建议。如有医疗紧急情况，请立即联系急救服务（中国：120，美国：911）。**
