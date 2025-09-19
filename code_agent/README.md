@@ -17,7 +17,7 @@
 Clone the repository and install the necessary dependencies:
 
 ```bash
-git clone https://github.com/your-repo/smartcoder-agent.git
+git clone https://github.com/yh-yao/super_agent_book/tree/main/code_agent.git
 cd smartcoder-agent
 pip install -e .
 ```
