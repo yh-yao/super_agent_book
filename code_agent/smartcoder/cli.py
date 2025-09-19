@@ -1,9 +1,20 @@
-import argparse, os, sys, subprocess
+import argparse, os, sys, subprocess, time, pathlib
 from .workspace import load_input_to_workspace, list_files
 from .analyzer import analyze, render_markdown_report
 from .planner import parse_instruction_to_plan, render_plan_markdown
 from .editor import apply_actions
-from .logging_utils import new_log_path, write_log
+
+def new_log_path(root: str, prefix: str = "run") -> str:
+    log_dir = os.path.join(root, ".smartcoder", "logs")
+    os.makedirs(log_dir, exist_ok=True)
+    ts = time.strftime("%Y%m%d-%H%M%S")
+    return os.path.join(log_dir, f"{prefix}-{ts}.md")
+
+def write_log(path: str, content: str) -> None:
+    base = pathlib.Path(path)
+    base.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content if content.endswith("\n") else content + "\n")
 
 def _print(s: str):
     if s is None:
@@ -36,15 +47,6 @@ def cmd_plan(args):
 def cmd_edit(args):
     root = load_input_to_workspace(args.path, None)
     steps = parse_instruction_to_plan(args.instruction or "")
-    if args.replace_print:
-        steps.append({"action": "replace_print", "args": {}, "explain": "User flag: replace print with logging."})
-    if args.add_logging:
-        steps.append({"action": "add_logging", "args": {}, "explain": "User flag: add function-entry logging."})
-    if args.fix_mutable_defaults:
-        steps.append({"action": "fix_mutable_defaults", "args": {}, "explain": "User flag: fix mutable defaults."})
-    if args.rename_func:
-        old, new = args.rename_func
-        steps.append({"action": "rename_function", "args": {"old": old, "new": new}, "explain": "User flag: rename identifier."})
 
     files = list_files(root)
     log_path = new_log_path(root, prefix="edit")
@@ -91,27 +93,51 @@ def cmd_auto(args):
     # 1. Analyze
     _print("### 1. Analyzing codebase...")
     analysis_data = analyze(root)
-    analysis_md = render_markdown_report(analysis_data)
+    
+    # Initial analysis for the log
+    analysis_md = render_markdown_report(analysis_data, include_code=False)
     md.append("## Analysis")
     md.append(analysis_md)
     _print("Analysis complete.")
 
-    # 2. Plan
-    _print("\n### 2. Generating a plan...")
-    steps = parse_instruction_to_plan(args.instruction, analysis_md)
-    plan_md = render_plan_markdown(steps)
-    md.append("## Plan")
-    md.append(plan_md)
-    _print("Plan:")
-    _print(plan_md)
+    # Loop for plan and edit
+    steps = []
+    dry_run_result = ""
+    max_retries = 3
+    for i in range(max_retries):
+        # Create a rich context for the LLM
+        rich_analysis_md = render_markdown_report(analysis_data, include_code=True)
+        
+        # 2. Plan
+        _print(f"\n### 2. Generating a plan (Attempt {i+1}/{max_retries})...")
+        steps = parse_instruction_to_plan(args.instruction, rich_analysis_md)
+        plan_md = render_plan_markdown(steps)
+        md.append(f"## Plan (Attempt {i+1})")
+        md.append(plan_md)
+        _print("Plan:")
+        _print(plan_md)
 
-    # 3. Edit (dry-run)
-    _print("\n### 3. Applying edits (dry-run)...")
-    files = list_files(root)
-    dry_run_result = apply_actions(root, files, steps, dry_run=True)
-    md.append("## Execution (Dry-run)")
-    md.append(dry_run_result)
-    _print(dry_run_result)
+        # 3. Edit (dry-run)
+        _print("\n### 3. Applying edits (dry-run)...")
+        files = list_files(root)
+        dry_run_result = apply_actions(root, files, steps, dry_run=True)
+        md.append(f"## Execution (Dry-run, Attempt {i+1})")
+        md.append(dry_run_result)
+        _print(dry_run_result)
+
+        if "- Error:" in dry_run_result:
+            _print("\nPlan failed to apply. Re-analyzing and re-planning...")
+            # Update analysis with failure context for the next attempt
+            analysis_data['files'].append({'path': 'error_log', 'lang': 'text', 'content': dry_run_result})
+            if i == max_retries - 1:
+                _print("\nMax retries reached. Aborting.")
+                text = "\n".join(md)
+                write_log(log_path, text)
+                _print(f"Full log saved: {log_path}")
+                sys.exit(1)
+            continue
+        else:
+            break
 
     if not args.apply:
         _print("\nDry-run complete. Use --apply to write changes to disk.")
@@ -122,6 +148,7 @@ def cmd_auto(args):
 
     # 4. Edit (apply)
     _print("\n### 4. Applying edits to disk...")
+    files = list_files(root)
     apply_result = apply_actions(root, files, steps, dry_run=False)
     md.append("## Execution (Apply)")
     md.append(apply_result)
@@ -171,11 +198,7 @@ def main():
 
     pe = sub.add_parser("edit", help="Apply edits (dry-run by default)")
     pe.add_argument("-p", "--path", required=True, help="path to file/dir/zip")
-    pe.add_argument("-i", "--instruction", help="free-form instruction (heuristic)")
-    pe.add_argument("--replace-print", action="store_true", help="explicit: replace print(...) with logging.info(...)")
-    pe.add_argument("--add-logging", action="store_true", help="explicit: add function-entry logging")
-    pe.add_argument("--fix-mutable-defaults", action="store_true", help="explicit: fix mutable default args")
-    pe.add_argument("--rename-func", nargs=2, metavar=("OLD", "NEW"), help="rename identifier OLD to NEW within Python files")
+    pe.add_argument("-i", "--instruction", help="free-form instruction")
     pe.add_argument("--apply", action="store_true", help="write changes to disk (default is dry-run)")
     pe.add_argument("-o", "--out", help="write execution log to file")
     pe.set_defaults(func=cmd_edit)

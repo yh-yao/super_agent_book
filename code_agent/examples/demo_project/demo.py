@@ -10,6 +10,13 @@ def greet(name=[]):  # mutable default (intentional issue)
 def add(a, b):
     return a + b
 
+def welcome(name):
+    """
+    A new greeting function that provides a warm welcome message.
+    """
+    print(f"Welcome, {name}! Nice to meet you!")
+    return True
+
 class Greeter:
     def say(self, who):
         print("hi", who)

@@ -1,5 +1,10 @@
 # Optional: OpenAI API helper (not used unless OPENAI_API_KEY is set by user).
 import os, json, urllib.request
+import os, json, urllib.request, sys
+
+def _print(s: str):
+    sys.stdout.write(s + ("\n" if not s.endswith("\n") else ""))
+    sys.stdout.flush()
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
@@ -7,11 +12,39 @@ def suggest_plan_with_llm(instruction: str, analysis_summary: str) -> list[dict]
     if not OPENAI_API_KEY:
         return []
     url = "https://api.openai.com/v1/chat/completions"
+    
+    system_prompt = """You are an expert Python developer AI agent. You analyze code, suggest changes, and provide detailed modifications to implement requested features or fix issues.
+
+Pay close attention to the user's intent. A request for a 'greeting from Alice' is different from a 'greeting to Alice'. Analyze the user's instruction carefully to understand the actors and the direction of the action.
+"""
+    
+    user_prompt = f"""Instruction:
+{instruction}
+
+Existing Code Analysis:
+{analysis_summary}
+
+Provide a plan and implementation in this JSON format:
+{{
+  "plan": ["step1", "step2", ...],
+  "changes": [
+    {{
+      "file": "path/to/file.py",
+      "description": "What this change does",
+      "code_before": "exact code to replace",
+      "code_after": "new code to insert"
+    }}
+  ],
+  "explanation": "Detailed explanation of the changes"
+}}
+
+Ensure code_before matches existing code exactly with correct indentation."""
+
     payload = {
-        "model": "gpt-4o-mini",
+        "model": "gpt-3.5-turbo",
         "messages": [
-            {"role": "system", "content": "You produce explicit, deterministic, safe refactoring plans limited to known actions."},
-            {"role": "user", "content": f"Instruction:\n{instruction}\n\nAnalysis:\n{analysis_summary}\n\nReturn a JSON list of steps {{action, args, explain}} using only actions from: add_logging, replace_print, rename_function, fix_mutable_defaults."}
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
         ],
         "temperature": 0.0
     }
@@ -23,6 +56,10 @@ def suggest_plan_with_llm(instruction: str, analysis_summary: str) -> list[dict]
     text = data["choices"][0]["message"]["content"]
     try:
         steps = json.loads(text)
+        if steps:
+            _print(f"LLM generated plan: {json.dumps(steps, indent=2)}")
         return steps
-    except Exception:
+    except Exception as e:
+        _print(f"Error parsing LLM response: {text}")
+        _print(f"Error: {str(e)}")
         return []

@@ -1,6 +1,10 @@
 import difflib
 
-def unified_diff_text(original: str, updated: str, fromfile: str = "before", tofile: str = "after") -> str:
-    a = original.splitlines(keepends=True)
-    b = updated.splitlines(keepends=True)
-    return "".join(difflib.unified_diff(a, b, fromfile, tofile))
+def unified_diff_text(a: str, b: str, fromfile: str = '', tofile: str = '', lineterm: str = '\n') -> str:
+    """
+    Returns a string containing a unified diff of two multiline strings.
+    """
+    a_lines = a.splitlines(keepends=True)
+    b_lines = b.splitlines(keepends=True)
+    diff = difflib.unified_diff(a_lines, b_lines, fromfile=fromfile, tofile=tofile, lineterm=lineterm)
+    return "".join(diff)
