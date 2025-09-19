@@ -1,0 +1,7 @@
+
+llm:
+  small: {provider: openai, model: gpt-4o-mini}
+  large: {provider: openai, model: gpt-4.1}
+  vision: {provider: openai, model: gpt-4o}
+embed:
+  default: {provider: openai, model: text-embedding-3-small, dim: 1536}
