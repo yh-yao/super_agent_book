@@ -11,10 +11,11 @@ def _py_complexity(src: str) -> int:
 
 def analyze_python_file(path: str) -> dict:
     info = {"path": path, "lang": "python", "functions": [], "classes": [], "todo": [],
-            "has_print": False, "mutable_defaults": [], "complexity": 0, "imports": []}
+            "has_print": False, "mutable_defaults": [], "complexity": 0, "imports": [], "content": ""}
     try:
         with open(path, "r", encoding="utf-8") as f:
             src = f.read()
+        info["content"] = src
     except Exception as e:
         info["error"] = f"read_error: {e}"
         return info
@@ -89,7 +90,7 @@ def analyze(root: str) -> dict:
                 out["summary"]["issues"] += 1
     return out
 
-def render_markdown_report(analysis: dict) -> str:
+def render_markdown_report(analysis: dict, include_code: bool = False) -> str:
     lines = []
     lines.append("# SmartCoder Analysis Report")
     lines.append(f"- Root: `{analysis.get('root')}`")
@@ -98,33 +99,30 @@ def render_markdown_report(analysis: dict) -> str:
     lines.append("")
     for f in analysis.get("files", []):
         lines.append(f"## {f.get('path')}")
-        if f.get("lang") == "python":
-            lines.append("- Language: Python")
-            if "error" in f:
-                lines.append(f"- Error: `{f['error']}`")
-                lines.append("")
-                continue
-            lines.append(f"- Functions: {', '.join([fn['name'] for fn in f.get('functions',[])]) or '(none)'}")
-            lines.append(f"- Classes: {', '.join([cl['name'] for cl in f.get('classes',[])]) or '(none)'}")
-            lines.append(f"- Complexity score (rough): {f.get('complexity')}")
-            if f.get("has_print"):
-                lines.append("- Uses print(): **yes**")
-            if f.get("mutable_defaults"):
-                md = '; '.join([f"{m['function']}:{m['arg']} ({m['type']})@{m['lineno']}" for m in f['mutable_defaults']])
-                lines.append(f"- Mutable defaults: {md}")
-            if f.get("todo"):
-                lines.append("- TODOs:")
-                for t in f["todo"]:
-                    lines.append(f"  - L{t['line']} [{t['tag']}] {t['text']}")
+        if f.get("error"):
+            lines.append(f"- Error: {f.get('error')}")
         else:
-            lines.append("- Language: JS/TS-like")
-            if f.get("has_console_log"):
-                lines.append("- Uses console.log(): **yes**")
-            lines.append(f"- Functions: {', '.join([fn['name'] for fn in f.get('functions',[])]) or '(none)'}")
-            lines.append(f"- Classes: {', '.join([cl['name'] for cl in f.get('classes',[])]) or '(none)'}")
-            if f.get("todo"):
-                lines.append("- TODOs:")
-                for t in f["todo"]:
-                    lines.append(f"  - L{t['line']} [{t['tag']}] {t['text']}")
+            if f.get("lang") == "python":
+                lines.append(f"- Language: Python, Complexity: {f.get('complexity')}")
+                if f.get("imports"):
+                    lines.append(f"- Imports: {', '.join(f.get('imports'))}")
+                if f.get("classes"):
+                    lines.append(f"- Classes: {', '.join([c['name'] for c in f.get('classes')])}")
+                if f.get("functions"):
+                    lines.append(f"- Functions: {', '.join([func['name'] for func in f.get('functions')])}")
+                if f.get("todo"):
+                    lines.append("- TODOs:")
+                    for todo in f.get("todo"):
+                        lines.append(f"  - L{todo['line']}: {todo['tag']} - {todo['text']}")
+            else:
+                lines.append(f"- Language: {f.get('lang')}")
+                if f.get("has_console_log"):
+                    lines.append("- Contains console.log")
+
+        if include_code and f.get('content'):
+            lines.append("\n**File Content:**\n")
+            lines.append(f"```{f.get('lang')}\n{f.get('content')}\n```\n")
+        
         lines.append("")
+            
     return "\n".join(lines)
