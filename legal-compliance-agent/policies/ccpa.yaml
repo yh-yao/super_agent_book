@@ -1,19 +1,20 @@
+```yaml
 id: ccpa_core_rights
-title: CCPA/CPRA core consumer rights and duties
+title: CCPA/CPRA核心消费者权利和义务
 jurisdiction: US-CA
 effective_from: 2020-01-01
 controls:
   - id: right_to_know
-    requirement: "Provide right to know categories and specific pieces of personal information collected"
-    evidence: ["Privacy policy", "DSAR portal", "Data inventory"]
+    requirement: "提供了解所收集个人信息类别和具体内容的权利"
+    evidence: ["隐私政策", "DSAR门户", "数据清单"]
     risk_weight: 0.6
     references:
       - law: "CCPA/CPRA"
         section: "1798.110"
         url: "https://oag.ca.gov/privacy/ccpa"
   - id: right_to_delete
-    requirement: "Provide right to delete personal information subject to exceptions"
-    evidence: ["Deletion SOP", "Data retention schedule"]
+    requirement: "提供删除个人信息的权利，但有例外情况"
+    evidence: ["删除SOP", "数据保留计划"]
     risk_weight: 0.6
     references:
       - law: "CCPA/CPRA"

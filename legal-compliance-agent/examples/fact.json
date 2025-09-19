@@ -1,21 +1,81 @@
 {
-  "org": "Acme Inc.",
+  "company_name": "艾克米科技有限公司",
+  "business_type": "SaaS软件服务平台",
+  "data_types": [
+    "用户个人信息",
+    "支付信息", 
+    "行为数据",
+    "位置信息",
+    "设备标识符"
+  ],
+  "processing_purposes": [
+    "服务提供",
+    "产品改进",
+    "营销推广",
+    "行为分析",
+    "安全保护"
+  ],
+  "data_subjects": [
+    "欧盟居民",
+    "加州居民",
+    "企业客户员工"
+  ],
+  "retention_period": "24个月",
+  "third_party_sharing": true,
+  "cross_border_transfer": true,
+  "security_measures": [
+    "数据加密",
+    "访问控制",
+    "定期安全审计",
+    "员工培训",
+    "漏洞扫描"
+  ],
   "jurisdiction": [
     "EU",
     "US-CA"
   ],
   "processes": [
     {
-      "purpose": "behavioral advertising",
+      "purpose": "用户账户管理",
       "data_categories": [
-        "online_identifiers",
-        "location"
+        "姓名",
+        "邮箱地址",
+        "电话号码",
+        "账户密码"
       ],
       "sensitive": false,
       "cross_border": [
         "EU->US"
       ],
-      "retention_months": 24
+      "retention_months": 12,
+      "legal_basis": "合同履行"
+    },
+    {
+      "purpose": "行为广告",
+      "data_categories": [
+        "在线标识符",
+        "位置信息",
+        "浏览历史",
+        "设备信息"
+      ],
+      "sensitive": false,
+      "cross_border": [
+        "EU->US"
+      ],
+      "retention_months": 24,
+      "legal_basis": "用户同意"
+    },
+    {
+      "purpose": "支付处理",
+      "data_categories": [
+        "信用卡信息",
+        "银行账户",
+        "交易历史"
+      ],
+      "sensitive": true,
+      "cross_border": [],
+      "retention_months": 84,
+      "legal_basis": "合同履行"
     }
   ]
 }

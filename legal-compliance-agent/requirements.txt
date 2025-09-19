@@ -8,3 +8,4 @@ pydantic
 pdfplumber
 python-docx
 PyYAML
+python-multipart

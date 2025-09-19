@@ -1,21 +1,22 @@
+```yaml
 id: gdpr_art_30_records
-title: Records of processing activities
+title: 处理活动记录
 jurisdiction: EU
 effective_from: 2018-05-25
 controls:
   - id: rpa_inventory
-    requirement: "Maintain Records of Processing Activities per GDPR Art.30"
-    evidence: ["RPA registry", "Data map", "Processor contracts"]
+    requirement: "根据GDPR第30条维护处理活动记录"
+    evidence: ["RPA注册表", "数据地图", "处理者合同"]
     risk_weight: 0.7
     references:
       - law: "GDPR"
-        article: "Art.30"
+        article: "第30条"
         url: "https://gdpr.eu/article-30/"
   - id: breach_notification
-    requirement: "Notify supervisory authority of personal data breach within 72 hours unless unlikely to result in risk"
-    evidence: ["Incident runbook", "Notification templates", "DPO approvals"]
+    requirement: "除非不太可能产生风险，否则应在72小时内向监管机构通知个人数据泄露"
+    evidence: ["事件处理手册", "通知模板", "DPO批准"]
     risk_weight: 0.9
     references:
       - law: "GDPR"
-        article: "Art.33"
+        article: "第33条"
         url: "https://gdpr.eu/article-33/"

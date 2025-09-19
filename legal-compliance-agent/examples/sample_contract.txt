@@ -1,7 +1,7 @@
-Master Services Agreement
+主服务协议
 
-1. Governing Law: The laws of California, without regard to conflicts of laws, shall govern.
-2. Data Protection: The Processor shall implement technical and organizational measures appropriate to the risk.
-3. Breach Notification: Processor shall notify Controller without undue delay and no later than 72 hours after becoming aware of a Personal Data Breach.
-4. Liability Cap: Aggregate liability shall not exceed USD 100,000.
-5. Subprocessors: Processor must obtain Controller's written authorization before engaging subprocessors.
+1. 管辖法律：应适用加利福尼亚州法律，不考虑法律冲突。
+2. 数据保护：处理者应实施适当的技术和组织措施以应对风险。
+3. 违规通知：处理者应在知悉个人数据泄露后不得无故延迟且不迟于72小时内通知控制者。
+4. 责任上限：总责任不得超过100,000美元。
+5. 子处理者：处理者必须在委托子处理者之前获得控制者的书面授权。

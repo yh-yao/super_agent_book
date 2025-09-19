@@ -1,6 +1,6 @@
-Data Protection Addendum (Baseline)
-- Breach notification within 72 hours
-- Subprocessor approval required
-- Technical and organizational measures proportional to risk
-- Liability cap at or above annual fees paid
-- Governing law: EU member state or mutually agreed
+数据保护附录（基线版本）
+- 72小时内违规通知
+- 需要子处理者批准
+- 技术和组织措施应与风险成比例
+- 责任上限等于或高于支付的年费
+- 管辖法律：欧盟成员国或双方协议确定

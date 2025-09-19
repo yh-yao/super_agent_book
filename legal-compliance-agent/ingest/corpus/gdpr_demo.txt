@@ -1,4 +1,10 @@
-General Data Protection Regulation (GDPR) — Selected Excerpts (demo)
+《通用数据保护条例》(GDPR) — 选定摘录（演示版）
+第30条 — 处理活动记录
+每个控制者以及在适用的情况下，控制者的代表，应维护其负责的处理活动记录...
+第6条 — 处理的合法性
+只有在且仅在以下至少一项适用时，处理才是合法的：(a) 数据主体已给予同意...
+生效日期：2018-05-25；可能适用综合更新（请查看最新发布日期）。
+来源：EUR-Lex官方出版物。 Data Protection Regulation (GDPR) — Selected Excerpts (demo)
 Article 30 — Records of processing activities
 Each controller and, where applicable, the controller’s representative, shall maintain a record of processing activities under its responsibility...
 Article 6 — Lawfulness of processing

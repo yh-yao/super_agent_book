@@ -1,0 +1,125 @@
+{
+  "company_name": "全球电商平台有限公司",
+  "business_type": "电子商务平台",
+  "data_types": [
+    "客户个人信息",
+    "交易记录", 
+    "浏览历史",
+    "支付信息",
+    "地址信息",
+    "设备标识符",
+    "Cookie数据"
+  ],
+  "processing_purposes": [
+    "订单处理",
+    "客户服务", 
+    "个性化推荐",
+    "欺诈检测",
+    "营销活动",
+    "数据分析"
+  ],
+  "data_subjects": [
+    "全球客户",
+    "欧盟居民",
+    "加州居民",
+    "未成年用户"
+  ],
+  "retention_period": "36个月",
+  "third_party_sharing": true,
+  "cross_border_transfer": true,
+  "security_measures": [
+    "数据加密",
+    "访问控制",
+    "安全审计",
+    "PCI DSS合规",
+    "员工培训",
+    "事件响应计划"
+  ],
+  "jurisdiction": [
+    "EU",
+    "US-CA", 
+    "US-NY",
+    "CN"
+  ],
+  "processes": [
+    {
+      "purpose": "用户注册和账户管理",
+      "data_categories": [
+        "姓名",
+        "邮箱地址",
+        "电话号码",
+        "出生日期"
+      ],
+      "sensitive": false,
+      "cross_border": [
+        "EU->US",
+        "CN->US"
+      ],
+      "retention_months": 12,
+      "legal_basis": "合同履行"
+    },
+    {
+      "purpose": "支付处理",
+      "data_categories": [
+        "信用卡号",
+        "银行账户信息",
+        "支付历史",
+        "账单地址"
+      ],
+      "sensitive": true,
+      "cross_border": [],
+      "retention_months": 84,
+      "legal_basis": "合同履行"
+    },
+    {
+      "purpose": "个性化推荐",
+      "data_categories": [
+        "浏览历史",
+        "购买偏好",
+        "搜索记录",
+        "点击行为"
+      ],
+      "sensitive": false,
+      "cross_border": [
+        "EU->US"
+      ],
+      "retention_months": 24,
+      "legal_basis": "用户同意"
+    },
+    {
+      "purpose": "营销推广",
+      "data_categories": [
+        "邮箱地址",
+        "购买历史",
+        "兴趣标签",
+        "人口统计信息"
+      ],
+      "sensitive": false,
+      "cross_border": [
+        "EU->US"
+      ],
+      "retention_months": 36,
+      "legal_basis": "用户同意"
+    }
+  ],
+  "third_parties": [
+    {
+      "name": "支付处理商",
+      "purpose": "支付处理",
+      "data_shared": ["支付信息", "交易记录"],
+      "location": "美国"
+    },
+    {
+      "name": "云服务提供商", 
+      "purpose": "数据存储",
+      "data_shared": ["所有用户数据"],
+      "location": "美国"
+    },
+    {
+      "name": "营销分析公司",
+      "purpose": "广告投放",
+      "data_shared": ["用户标识符", "行为数据"],
+      "location": "全球"
+    }
+  ]
+}

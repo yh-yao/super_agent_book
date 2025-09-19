@@ -7,9 +7,9 @@ import json
 router = APIRouter(prefix="/api/qa", tags=["qa"])
 
 QA_SYSTEM_PROMPT = (
-    "You are a legal-compliance assistant. You MUST cite sources from provided contexts. "
-    "Do not provide legal advice; provide information with jurisdictions and effective dates. "
-    "Answer in JSON with fields: answer, citations[], assumptions[], confidence (0-1), disclaimer."
+    "您是一个法律合规助手。您必须引用提供的上下文中的来源。"
+    "不要提供法律建议；请提供包含管辖区域和生效日期的信息。"
+    "以JSON格式回答，包含字段：answer（答案）、citations[]（引用）、assumptions[]（假设）、confidence（置信度，0-1）、disclaimer（免责声明）。"
 )
 
 def build_user_prompt(question: str, hits):
@@ -26,9 +26,9 @@ def build_user_prompt(question: str, hits):
         "question": question,
         "contexts": ctxs,
         "instructions": [
-            "Use only the contexts for factual claims.",
-            "List citations with title/url/date and include short supporting snippets.",
-            "If insufficient evidence, say so and suggest next steps."
+            "仅使用上下文中的信息进行事实声明。",
+            "列出包含标题/链接/日期的引用，并包含简短的支撑片段。",
+            "如果证据不足，请说明并建议下一步措施。"
         ]
     }
     return json.dumps(prompt, ensure_ascii=False)

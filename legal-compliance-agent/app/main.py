@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import qa, compliance, contracts
 
-app = FastAPI(title="Legal-Compliance Copilot", version="0.1.0")
+app = FastAPI(title="法律合规助手", version="0.1.0")
 
 app.add_middleware(
     CORSMiddleware,
