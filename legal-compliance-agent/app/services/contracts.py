@@ -63,6 +63,10 @@ def review_contract_file(tmp_path: str) -> Tuple[dict, list, str]:
     baseline = _load_baseline()
     risks = compare_to_baseline(extracted, baseline)
     rep_id = str(uuid.uuid4())[:8]
+    
+    # Ensure the reports directory exists
+    os.makedirs(REPORT_DIR, exist_ok=True)
+    
     report_path = os.path.join(REPORT_DIR, f"contract_report_{rep_id}.json")
     with open(report_path, "w", encoding="utf-8") as f:
         json.dump({"extracted":extracted,"risks":risks}, f, ensure_ascii=False, indent=2)

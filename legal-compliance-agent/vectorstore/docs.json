@@ -1,0 +1,23 @@
+[
+  {
+    "title": "ccpa_demo.txt",
+    "date": "2020-01-01",
+    "url": "oag.ca.gov/privacy/ccpa",
+    "chunk_id": "ccpa_demo.txt#chunk0",
+    "text": "《加利福尼亚消费者隐私法》(CCPA/CPRA) — 选定摘录（演示版）\n消费者权利包括知情权、删除权以及选择退出个人信息销售或共享的权利...\n义务包括收集时通知和合理的安全程序...\n生效日期：2020-01-01；由CPRA修订（2023-01-01生效）。\n来源：oag.ca.gov/privacy/ccpa"
+  },
+  {
+    "title": "gdpr_demo.txt",
+    "date": "2018-05-25",
+    "url": "EUR-Lex official publication.",
+    "chunk_id": "gdpr_demo.txt#chunk0",
+    "text": "《通用数据保护条例》(GDPR) — 选定摘录（演示版）\n第30条 — 处理活动记录\n每个控制者以及在适用的情况下，控制者的代表，应维护其负责的处理活动记录...\n第6条 — 处理的合法性\n只有在且仅在以下至少一项适用时，处理才是合法的：(a) 数据主体已给予同意...\n生效日期：2018-05-25；可能适用综合更新（请查看最新发布日期）。\n来源：EUR-Lex官方出版物。 Data Protection Regulation (GDPR) — Selected Excerpts (demo)\nArticle 30 — Records of processing activities\nEach controller and, where applicable, the controller’s representative, shall maintain a record of processing activities under its responsibility...\nArticle 6 — Lawfulness of processing\nProcessing shall be lawful only if and to the extent that at least one of the following applies: (a) the data subject has given consent...\nEffective date: 2018-05-25; Consolidated updates may apply (check latest publi"
+  },
+  {
+    "title": "gdpr_demo.txt",
+    "date": "2018-05-25",
+    "url": "EUR-Lex official publication.",
+    "chunk_id": "gdpr_demo.txt#chunk1",
+    "text": "has given consent...\nEffective date: 2018-05-25; Consolidated updates may apply (check latest publication dates).\nSource: EUR-Lex official publication."
+  }
+]

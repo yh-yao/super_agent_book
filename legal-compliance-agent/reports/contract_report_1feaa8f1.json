@@ -1,0 +1,15 @@
+{
+  "extracted": {},
+  "risks": [
+    {
+      "clause": "breach_notification",
+      "severity": "high",
+      "note": "Missing 72h or undue delay wording."
+    },
+    {
+      "clause": "subprocessors",
+      "severity": "medium",
+      "note": "No explicit subprocessor approval."
+    }
+  ]
+}

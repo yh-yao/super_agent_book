@@ -1,0 +1,11 @@
+{
+  "company_name": "示例科技公司",
+  "business_type": "SaaS软件服务",
+  "data_types": ["用户个人信息", "支付信息", "行为数据"],
+  "processing_purposes": ["服务提供", "产品改进", "营销"],
+  "data_subjects": ["欧盟居民", "加州居民"],
+  "retention_period": "24个月",
+  "third_party_sharing": true,
+  "cross_border_transfer": true,
+  "security_measures": ["加密", "访问控制", "定期审计"]
+}

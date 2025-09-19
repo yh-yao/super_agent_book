@@ -16,8 +16,35 @@ def sha256(s: str) -> str:
 
 def embed_texts(texts):
     # Returns list of embeddings
-    resp = client.embeddings.create(model=EMB_MODEL, input=texts)
-    return [d.embedding for d in resp.data]
+    try:
+        if not texts:
+            return []
+        
+        # 检查API密钥
+        if not client.api_key:
+            raise ValueError("OpenAI API key not configured")
+        
+        print(f"      📡 调用OpenAI API处理 {len(texts)} 个文本...")
+        start_time = time.time()
+        
+        resp = client.embeddings.create(
+            model=EMB_MODEL, 
+            input=texts,
+            timeout=30  # 30秒超时
+        )
+        
+        elapsed = time.time() - start_time
+        print(f"      ⏱️ API调用完成，耗时 {elapsed:.2f}秒")
+        
+        return [d.embedding for d in resp.data]
+        
+    except Exception as e:
+        print(f"❌ 嵌入生成失败: {e}")
+        print(f"   模型: {EMB_MODEL}")
+        print(f"   文本数量: {len(texts)}")
+        if texts:
+            print(f"   文本长度: {[len(t) for t in texts]}")
+        raise
 
 def chat_json(system_prompt: str, user_prompt: str, max_tokens: int = 700, temperature: float = 0.2):
     resp = client.chat.completions.create(
