@@ -1,3 +1,0 @@
-Employer of Record (EOR) solutions allow companies to hire without creating a local legal entity.
-An EOR becomes the legal employer, handling payroll, statutory benefits, and compliance.
-This reduces setup time and risk for small and medium-sized businesses entering a new market.
