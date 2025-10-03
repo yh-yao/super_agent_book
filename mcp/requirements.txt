@@ -1,0 +1,10 @@
+# MCP Demo 项目依赖
+
+# Model Context Protocol SDK
+mcp>=1.2.0
+
+# HTTP 客户端库
+httpx>=0.27.0
+
+# OpenAI SDK (用于 openai_client.py 示例)
+openai>=1.0.0

@@ -20,7 +20,8 @@ async def chat(req: ChatRequest):
         messages=[{"role":"user","content": req.message}],
     )
     final_state = graph.invoke(state)
-    trace_file = graph.save_trace()  # 保存执行轨迹\n    return ChatResponse(
+    trace_file = graph.save_trace()  # 保存执行轨迹
+    return ChatResponse(
         reply=final_state.outcome or "",
         citations=[e.source for e in final_state.evidences]
     )

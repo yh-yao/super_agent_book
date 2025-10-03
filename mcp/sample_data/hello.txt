@@ -1,1 +1,1 @@
-Hello from sample_data/hello.txt via MCP read_file!
+你好！这是通过 MCP read_file 工具读取的 sample_data/hello.txt 文件内容。
