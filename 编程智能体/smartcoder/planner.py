@@ -2,9 +2,9 @@ import json
 from .llm import suggest_plan_with_llm, OPENAI_API_KEY
 
 def parse_instruction_to_plan(instruction: str, analysis_summary: str = "") -> list[dict]:
-    """Generate a plan for code modifications."""
+    """生成代码修改计划。"""
     if OPENAI_API_KEY and analysis_summary:
-        print("(Using LLM to generate plan...)")
+        print("(正在使用LLM生成计划...)")
         llm_response = suggest_plan_with_llm(instruction, analysis_summary)
         if llm_response and "changes" in llm_response:
             steps = []
@@ -20,20 +20,20 @@ def parse_instruction_to_plan(instruction: str, analysis_summary: str = "") -> l
                 })
             return steps
     
-    print("(Using basic analysis to generate plan...)")
-    # Simple fallback when LLM is not available
-    return [{"action": "noop", "args": {}, "explain": "This operation requires LLM to understand and generate code changes."}]
+    print("(正在使用基础分析生成计划...)")
+    # 当LLM不可用时的简单后备方案
+    return [{"action": "noop", "args": {}, "explain": "此操作需要LLM来理解和生成代码更改。"}]
 
 def render_plan_markdown(steps: list[dict]) -> str:
-    plan_type = "LLM" if OPENAI_API_KEY else "deterministic"
-    lines = [f"# Edit Plan ({plan_type})", ""]
+    plan_type = "LLM" if OPENAI_API_KEY else "确定性"
+    lines = [f"# 编辑计划 ({plan_type})", ""]
     if not steps:
-        lines.append("No steps were generated for this instruction.")
+        lines.append("未为此指令生成步骤。")
     else:
         for i, st in enumerate(steps, 1):
-            lines.append(f"### Step {i}: {st['action']}")
-            lines.append(f"- Why: {st['explain']}")
+            lines.append(f"### 步骤 {i}: {st['action']}")
+            lines.append(f"- 原因: {st['explain']}")
             if st.get("args"):
-                lines.append(f"- Args: `{json.dumps(st['args'])}`")
+                lines.append(f"- 参数: `{json.dumps(st['args'])}`")
             lines.append("")
     return "\n".join(lines)

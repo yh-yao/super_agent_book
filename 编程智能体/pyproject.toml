@@ -9,6 +9,9 @@ description = "Step-by-step code analysis and editing agent (pure stdlib)."
 authors = [{name = "ChatGPT Assistant"}]
 readme = "README.md"
 requires-python = ">=3.9"
+dependencies = [
+    "openai",
+]
 
 [project.scripts]
 smartcoder = "smartcoder.cli:main"

@@ -2,7 +2,7 @@ import difflib
 
 def unified_diff_text(a: str, b: str, fromfile: str = '', tofile: str = '', lineterm: str = '\n') -> str:
     """
-    Returns a string containing a unified diff of two multiline strings.
+    返回包含两个多行字符串的统一差异的字符串。
     """
     a_lines = a.splitlines(keepends=True)
     b_lines = b.splitlines(keepends=True)

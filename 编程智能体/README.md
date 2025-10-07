@@ -1,63 +1,62 @@
-# SmartCoder Agent
+````markdown
+# 智能编程助手
 
-**SmartCoder** is a fully autonomous AI agent that can understand and carry out complex coding tasks on your local codebase. It is powered by a Large Language Model (LLM) to analyze, plan, and execute changes to your code.
+**智能编程助手**是一个完全自主的AI智能体，能够理解并执行本地代码库中的复杂编程任务。它由大型语言模型（LLM）驱动，可以分析、规划和执行代码修改。
 
-## Features
+## 功能特点
 
-- **Autonomous Operation**: Simply provide an instruction, and SmartCoder will handle the rest.
-- **Code Analysis**: Automatically analyzes your codebase to understand the context.
-- **LLM-Powered Planning**: Generates a step-by-step plan to implement your request.
-- **Self-Correction**: If a plan fails, SmartCoder will re-analyze the problem and attempt to correct its own plan.
-- **Safe Dry-Runs**: All changes are tested in a dry-run mode before any files are modified on disk.
+- **自主操作**：只需提供一条指令，智能编程助手就能处理剩下的所有工作。
+- **代码分析**：自动分析您的代码库以理解上下文。
+- **LLM驱动的规划**：生成逐步执行计划来实现您的需求。
+- **自我修正**：如果计划失败，智能编程助手将重新分析问题并尝试修正自己的计划。
+- **安全的试运行**：在实际修改任何文件之前，所有更改都会在试运行模式下测试。
 
-## Quick Start
+## 快速开始
 
-### 1. Installation
-
-Clone the repository and install the necessary dependencies:
+### 1. 安装
 
 ```bash
-git clone https://github.com/yh-yao/super_agent_book/tree/main/code_agent.git
-cd smartcoder-agent
 pip install -e .
 ```
 
-### 2. Set up your OpenAI API Key
+### 2. 设置您的 OpenAI API 密钥
 
-SmartCoder uses OpenAI's GPT models. You need to set your API key as an environment variable:
+智能编程助手使用 OpenAI 的 GPT 模型。您需要将 API 密钥设置为环境变量：
 
 ```bash
 export OPENAI_API_KEY="your-openai-api-key"
 ```
 
-### 3. Run the Agent
+### 3. 运行智能体
 
-Use the `auto` command to give SmartCoder an instruction. You need to provide the path to your project and a clear instruction for the task you want to perform.
-
-```bash
-smartcoder auto -p /path/to/your/project -i "your instruction here"
-```
-
-For example, to refactor a function named `old_function` to `new_function` in a demo project, you would run:
+使用 `auto` 命令给智能编程助手一个指令。您需要提供项目路径和要执行任务的清晰指令。
 
 ```bash
-smartcoder auto -p ./examples/demo_project -i "rename the function 'greeting' to 'say_hello'"
+smartcoder auto -p /path/to/your/project -i "你的指令"
 ```
 
-To apply the changes directly to your files, use the `--apply` flag:
+例如，要在演示项目中将函数 `old_function` 重命名为 `new_function`，可以运行：
 
 ```bash
-smartcoder auto -p ./examples/demo_project -i "add a new function that says goodbye" --apply
+smartcoder auto -p ./examples/demo_project -i "将函数 'greeting' 重命名为 'say_hello'"
 ```
 
-## How It Works
+要直接将更改应用到文件，使用 `--apply` 标志：
 
-The `auto` command orchestrates a sequence of steps:
+```bash
+smartcoder auto -p ./examples/demo_project -i "添加一个新函数用于说再见" --apply
+```
 
-1.  **Analyze**: It scans your project to build a contextual understanding of your code.
-2.  **Plan**: It sends the analysis and your instruction to an LLM to generate a detailed execution plan.
-3.  **Execute (Dry-Run)**: It performs a dry-run of the plan to verify the changes without modifying any files. If the plan fails, it will loop back to the planning step, providing the error as additional context to the LLM.
-4.  **Apply (Optional)**: If the dry-run is successful and you've used the `--apply` flag, the agent will write the changes to your files.
-5.  **Verify**: It performs a final syntax check on the modified files to ensure code integrity.
+## 工作原理
 
-All logs for each run are saved in the `.smartcoder/logs` directory within your project.
+`auto` 命令协调一系列步骤：
+
+1.  **分析**：扫描您的项目以建立对代码的上下文理解。
+2.  **规划**：将分析结果和您的指令发送给 LLM，生成详细的执行计划。
+3.  **执行（试运行）**：执行计划的试运行以验证更改，而不修改任何文件。如果计划失败，它将循环回到规划步骤，将错误作为附加上下文提供给 LLM。
+4.  **应用（可选）**：如果试运行成功且您使用了 `--apply` 标志，智能体将把更改写入您的文件。
+5.  **验证**：对修改后的文件执行最终语法检查，以确保代码完整性。
+
+每次运行的所有日志都保存在项目内的 `.smartcoder/logs` 目录中。
+
+````

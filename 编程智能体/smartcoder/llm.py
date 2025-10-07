@@ -1,5 +1,4 @@
-# Optional: OpenAI API helper (not used unless OPENAI_API_KEY is set by user).
-import os, json, urllib.request
+# 可选: OpenAI API 助手（除非用户设置了OPENAI_API_KEY，否则不使用）。
 import os, json, urllib.request, sys
 
 def _print(s: str):
@@ -13,32 +12,32 @@ def suggest_plan_with_llm(instruction: str, analysis_summary: str) -> list[dict]
         return []
     url = "https://api.openai.com/v1/chat/completions"
     
-    system_prompt = """You are an expert Python developer AI agent. You analyze code, suggest changes, and provide detailed modifications to implement requested features or fix issues.
+    system_prompt = """你是一个专业的Python开发者AI智能体。你可以分析代码、建议更改，并提供详细的修改来实现所需功能或修复问题。
 
-Pay close attention to the user's intent. A request for a 'greeting from Alice' is different from a 'greeting to Alice'. Analyze the user's instruction carefully to understand the actors and the direction of the action.
+请密切注意用户的意图。例如，"来自Alice的问候"与"向Alice问候"是不同的。请仔细分析用户的指令，以理解参与者和操作的方向。
 """
     
-    user_prompt = f"""Instruction:
+    user_prompt = f"""指令:
 {instruction}
 
-Existing Code Analysis:
+现有代码分析:
 {analysis_summary}
 
-Provide a plan and implementation in this JSON format:
+请以以下JSON格式提供计划和实现:
 {{
-  "plan": ["step1", "step2", ...],
+  "plan": ["步骤1", "步骤2", ...],
   "changes": [
     {{
       "file": "path/to/file.py",
-      "description": "What this change does",
-      "code_before": "exact code to replace",
-      "code_after": "new code to insert"
+      "description": "此更改的作用",
+      "code_before": "要替换的精确代码",
+      "code_after": "要插入的新代码"
     }}
   ],
-  "explanation": "Detailed explanation of the changes"
+  "explanation": "更改的详细说明"
 }}
 
-Ensure code_before matches existing code exactly with correct indentation."""
+确保code_before与现有代码完全匹配，包括正确的缩进。"""
 
     payload = {
         "model": "gpt-3.5-turbo",
@@ -57,9 +56,9 @@ Ensure code_before matches existing code exactly with correct indentation."""
     try:
         steps = json.loads(text)
         if steps:
-            _print(f"LLM generated plan: {json.dumps(steps, indent=2)}")
+            _print(f"LLM生成的计划: {json.dumps(steps, indent=2, ensure_ascii=False)}")
         return steps
     except Exception as e:
-        _print(f"Error parsing LLM response: {text}")
-        _print(f"Error: {str(e)}")
+        _print(f"解析LLM响应时出错: {text}")
+        _print(f"错误: {str(e)}")
         return []
