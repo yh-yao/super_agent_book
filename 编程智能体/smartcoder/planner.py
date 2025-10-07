@@ -20,8 +20,16 @@ def parse_instruction_to_plan(instruction: str, analysis_summary: str = "") -> l
                 })
             return steps
     
-    print("(正在使用基础分析生成计划...)")
-    # 当LLM不可用时的简单后备方案
+    # 当LLM不可用时的提示和后备方案
+    if not OPENAI_API_KEY:
+        print("\n⚠️  警告: 未设置 OPENAI_API_KEY 环境变量")
+        print("💡 提示: 请设置您的 OpenAI API key 以启用智能代码生成功能:")
+        print("   export OPENAI_API_KEY='your-api-key-here'")
+        print("   然后重新运行命令\n")
+    else:
+        print("(正在使用基础分析生成计划...)")
+    
+    # 简单后备方案
     return [{"action": "noop", "args": {}, "explain": "此操作需要LLM来理解和生成代码更改。"}]
 
 def render_plan_markdown(steps: list[dict]) -> str:
