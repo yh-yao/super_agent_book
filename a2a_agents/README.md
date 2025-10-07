@@ -10,6 +10,7 @@
 - ✅ 类型安全的消息传递
 - ✅ 支持多种协作模式（串行、并行、条件路由、管道）
 - ✅ 生产级代码质量
+- 🤖 集成 OpenAI GPT-4o-mini 提供智能能力
 
 ---
 
@@ -21,29 +22,32 @@
 pip install -r requirements.txt
 ```
 
-依赖包括：`a2a-sdk`, `fastapi`, `uvicorn`, `httpx`
+依赖包括：`a2a-sdk`, `fastapi`, `uvicorn`, `httpx`, `openai`, `python-dotenv`
 
-### 2. 启动 Agent 服务
+### 2. 配置 OpenAI API Key
+
+```
+export OPENAI_API_KEY=your_openai_api_key_here
+```
+
+### 3. 启动 Agent 服务
 
 ```bash
-# 一键启动所有 Agent（推荐）
-chmod +x start_all.sh && ./start_all.sh
-
-# 或手动启动 4 个 Agent（需要 4 个终端）
+# 启动 4 个 Agent（需要 4 个终端）
 python agents/collector_agent.py    # 端口 8001
 python agents/summarizer_agent.py   # 端口 8002
 python agents/translator_agent.py   # 端口 8003
 python agents/classifier_agent.py   # 端口 8004
 ```
 
-### 3. 验证服务
+### 4. 验证服务
 
 访问 Agent Card 端点：
 ```bash
 curl http://localhost:8001/.well-known/agent-card.json
 ```
 
-### 4. 运行示例
+### 5. 运行示例
 
 ```bash
 python clients/01_sequential.py    # 串行协作
@@ -67,12 +71,14 @@ python clients/04_pipeline.py      # 复杂管道
 
 ## 🏗️ Agent 服务说明
 
-| Agent | 端口 | 功能 | 输入 | 输出 |
-|-------|------|------|------|------|
-| **Collector** | 8001 | 收集新闻 | 主题、数量 | 新闻列表 |
-| **Summarizer** | 8002 | 生成摘要 | 原始文本 | 摘要文本 |
-| **Translator** | 8003 | 文本翻译 | 文本、语言 | 翻译结果 |
-| **Classifier** | 8004 | 内容分类 | 文本 | 分类标签 |
+| Agent | 端口 | 功能 | AI 模型 | 输入 | 输出 |
+|-------|------|------|---------|------|------|
+| **Collector** | 8001 | 收集新闻 | GPT-4o-mini (请求解析) | 主题、数量 | 新闻列表 |
+| **Summarizer** | 8002 | 生成摘要 | GPT-4o-mini | 原始文本 | 摘要文本 |
+| **Translator** | 8003 | 文本翻译 | GPT-4o-mini | 文本、语言 | 翻译结果 |
+| **Classifier** | 8004 | 内容分类 | GPT-4o-mini | 文本 | 分类标签 |
+
+**所有 Agent 均使用 OpenAI GPT-4o-mini 模型提供智能能力。**
 
 ---
 

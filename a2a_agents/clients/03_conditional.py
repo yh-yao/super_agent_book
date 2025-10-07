@@ -11,7 +11,58 @@ Classifier → [AI] → Specialized AI Handler
 根据内容分类，路由到不同的 Agent
 """
 import asyncio
-from a2a.client import ClientFactory, create_text_message_object
+import uuid
+import httpx
+from a2a.client.legacy import A2AClient
+from a2a.types import Message, Part, TextPart, Role, SendMessageRequest, MessageSendParams
+
+
+def _build_text_message(text: str) -> SendMessageRequest:
+    message = Message(
+        message_id=str(uuid.uuid4()),
+        role=Role.user,
+        parts=[Part(root=TextPart(text=text))],
+    )
+    return SendMessageRequest(id=str(uuid.uuid4()), params=MessageSendParams(message=message))
+
+
+async def _send_and_extract(client: A2AClient, req: SendMessageRequest) -> str:
+    resp = await client.send_message(req)
+    txt = ""
+    result = getattr(resp.root, 'result', None)
+    if result and hasattr(result, 'message'):
+        msg_obj = getattr(result, 'message')
+    else:
+        msg_obj = result or getattr(resp, 'message', None)
+    if msg_obj and hasattr(msg_obj, 'parts'):
+        for part in msg_obj.parts:
+            if hasattr(part.root, 'text'):
+                txt = part.root.text
+    return txt
+
+
+async def _send_and_extract_classifier(client: A2AClient, req: SendMessageRequest) -> tuple[str, float, str]:
+    resp = await client.send_message(req)
+    category = "其他"
+    confidence = 0.0
+    detail_text = ""
+    result = getattr(resp.root, 'result', None)
+    if result and hasattr(result, 'message'):
+        msg_obj = getattr(result, 'message')
+    else:
+        msg_obj = result or getattr(resp, 'message', None)
+    if msg_obj and hasattr(msg_obj, 'parts'):
+        for part in msg_obj.parts:
+            root = getattr(part, 'root', None)
+            if not root:
+                continue
+            if hasattr(root, 'data') and 'json' in root.data:
+                data = root.data['json']
+                category = data.get('category', category)
+                confidence = data.get('confidence', confidence)
+            elif hasattr(root, 'text'):
+                detail_text = root.text
+    return category, confidence, detail_text
 
 
 async def main():
@@ -23,70 +74,43 @@ async def main():
     collector_url = "http://localhost:8001"
     classifier_url = "http://localhost:8004"
     summarizer_url = "http://localhost:8002"
+    httpx_client = httpx.AsyncClient(timeout=httpx.Timeout(30.0))
     
     try:
         # 步骤 1: 连接 Agent
         print("\n📡 步骤 1: 连接到所有 Agent...")
-        
-        collector = await ClientFactory.create_client(collector_url)
-        print(f"  ✅ Collector Agent 已连接")
-        
-        classifier = await ClientFactory.create_client(classifier_url)
-        print(f"  ✅ Classifier Agent 已连接")
-        
-        summarizer = await ClientFactory.create_client(summarizer_url)
-        print(f"  ✅ Summarizer Agent 已连接")
-        
+        collector = A2AClient(httpx_client=httpx_client, url=collector_url)
+        classifier = A2AClient(httpx_client=httpx_client, url=classifier_url)
+        summarizer = A2AClient(httpx_client=httpx_client, url=summarizer_url)
+        print("  ✅ 所有 Agent 已连接")
+
         # 步骤 2: 收集新闻
         print("\n📰 步骤 2: 收集新闻...")
         topic = input("请输入新闻主题 (AI/科技/金融，默认: 科技): ").strip() or "科技"
-        
-        collect_msg = create_text_message_object(f"收集关于 {topic} 的新闻，限制 3 条")
-        
-        news_data = ""
-        async for event in collector.send_message(collect_msg):
-            if hasattr(event, 'parts'):
-                for part in event.parts:
-                    if hasattr(part.root, 'text'):
-                        news_data = part.root.text
-        
+        collect_req = _build_text_message(f"收集关于 {topic} 的新闻，限制 3 条")
+        news_data = await _send_and_extract(collector, collect_req)
         print(f"  ✅ 收集完成 ({len(news_data)} 字符)")
-        
+
         input("\n按 Enter 继续分类...")
-        
+
         # 步骤 3: 分类新闻
         print("\n🏷️  步骤 3: 对新闻进行分类...")
-        
-        classify_msg = create_text_message_object(f"对以下内容分类：\n\n{news_data}")
-        
-        category = "其他"
-        confidence = 0.0
-        
-        async for event in classifier.send_message(classify_msg):
-            if hasattr(event, 'parts'):
-                for part in event.parts:
-                    # 从 DataPart 提取分类结果
-                    if hasattr(part.root, 'data'):
-                        data = part.root.data
-                        if 'json' in data:
-                            json_data = data['json']
-                            category = json_data.get('category', '其他')
-                            confidence = json_data.get('confidence', 0.0)
-                    # 从 TextPart 提取文本
-                    elif hasattr(part.root, 'text'):
-                        print(f"\n  📋 分类详情:")
-                        print("  " + "-"*76)
-                        print("  " + part.root.text.replace("\n", "\n  "))
-                        print("  " + "-"*76)
-        
+        classify_req = _build_text_message(f"对以下内容分类：\n\n{news_data}")
+        category, confidence, detail_text = await _send_and_extract_classifier(classifier, classify_req)
+
+        if detail_text:
+            print(f"\n  📋 分类详情:")
+            print("  " + "-"*76)
+            print("  " + detail_text.replace("\n", "\n  "))
+            print("  " + "-"*76)
+
         print(f"\n  🏷️  分类结果: {category}")
         print(f"  📊 置信度: {confidence:.2%}")
-        
+
         input("\n按 Enter 继续路由...")
-        
+
         # 步骤 4: 条件路由 - 根据分类决定处理方式
         print(f"\n🔀 步骤 4: 根据分类 [{category}] 路由到专门处理器...")
-        
         if category == "AI":
             print("  ➡️  路由到: AI 专业摘要处理器")
             instruction = "作为 AI 专家，对以下 AI 新闻生成专业深度摘要，重点关注技术细节和行业影响"
@@ -99,42 +123,32 @@ async def main():
         else:
             print("  ➡️  路由到: 通用摘要处理器")
             instruction = "对以下新闻生成摘要"
-        
+
         # 步骤 5: 执行专业化处理
         print(f"\n📝 步骤 5: 执行专业化摘要生成...")
-        
-        process_msg = create_text_message_object(f"{instruction}：\n\n{news_data}")
-        
-        result = ""
-        async for event in summarizer.send_message(process_msg):
-            if hasattr(event, 'parts'):
-                for part in event.parts:
-                    if hasattr(part.root, 'text'):
-                        result = part.root.text
-        
+        process_req = _build_text_message(f"{instruction}：\n\n{news_data}")
+        result = await _send_and_extract(summarizer, process_req)
         print(f"  ✅ 处理完成 ({len(result)} 字符)")
-        
+
         # 最终结果
         print("\n" + "="*80)
         print("🎉 条件路由协作完成！")
         print("="*80)
         print(f"\n📊 路由路径:")
         print(f"  收集 → 分类[{category}] → 专业处理器 → 结果")
-        
+
         print("\n" + "="*80)
         print(f"📄 {category} 专业摘要:")
         print("="*80)
         print(result)
         print("="*80)
-        
-    except ConnectionError as e:
-        print(f"\n❌ 连接失败: {e}")
-        print("\n💡 请确保所有 Agent 服务正在运行")
-    
-    except Exception as e:
+
+    except Exception as e:  # noqa: BLE001
         print(f"\n❌ 发生错误: {e}")
         import traceback
         traceback.print_exc()
+    finally:
+        await httpx_client.aclose()
 
 
 def print_summary():

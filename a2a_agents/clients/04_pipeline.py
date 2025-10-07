@@ -8,41 +8,63 @@ Collect → Classify → [Parallel Processing] → Merge → Summarize → Trans
 构建可复用的 Agent 协作管道
 """
 import asyncio
-from a2a.client import ClientFactory, create_text_message_object
+import uuid
+import httpx
+from a2a.client.legacy import A2AClient
+from a2a.types import Message, Part, TextPart, Role, SendMessageRequest, MessageSendParams
 from typing import List, Dict, Any
 import time
 
 
+def _build_text_message(text: str) -> SendMessageRequest:
+    message = Message(
+        message_id=str(uuid.uuid4()),
+        role=Role.user,
+        parts=[Part(root=TextPart(text=text))],
+    )
+    return SendMessageRequest(id=str(uuid.uuid4()), params=MessageSendParams(message=message))
+
+
+async def _send_and_extract(client: A2AClient, req: SendMessageRequest) -> str:
+    resp = await client.send_message(req)
+    txt = ""
+    result = getattr(resp.root, 'result', None)
+    if result and hasattr(result, 'message'):
+        msg_obj = getattr(result, 'message')
+    else:
+        msg_obj = result or getattr(resp, 'message', None)
+    if msg_obj and hasattr(msg_obj, 'parts'):
+        for part in msg_obj.parts:
+            if hasattr(part.root, 'text'):
+                txt = part.root.text
+    return txt
+
+
 class AgentPipeline:
     """Agent 协作管道"""
-    
-    def __init__(self):
-        self.agents = {}
-        self.execution_log = []
-    
+
+    def __init__(self, httpx_client: httpx.AsyncClient):
+        self.agents: dict[str, A2AClient] = {}
+        self.execution_log: list[dict[str, Any]] = []
+        self.httpx_client = httpx_client
+
     async def add_agent(self, name: str, url: str):
         """添加 Agent 到管道"""
-        self.agents[name] = await ClientFactory.create_client(url)
+        self.agents[name] = A2AClient(httpx_client=self.httpx_client, url=url)
         print(f"  ✅ {name} Agent 已加入管道")
-    
-    async def execute_step(self, agent_name: str, message: str, description: str = None) -> str:
+
+    async def execute_step(self, agent_name: str, message: str, description: str | None = None) -> str:
         """执行管道步骤"""
         if agent_name not in self.agents:
             raise ValueError(f"Agent {agent_name} 不存在")
-        
+
         desc = description or f"执行 {agent_name}"
         print(f"\n🔄 {desc}...")
-        
+
         start_time = time.time()
-        
-        msg = create_text_message_object(message)
-        
-        result = ""
-        async for event in self.agents[agent_name].send_message(msg):
-            if hasattr(event, 'parts'):
-                for part in event.parts:
-                    if hasattr(part.root, 'text'):
-                        result = part.root.text
+
+        req = _build_text_message(message)
+        result = await _send_and_extract(self.agents[agent_name], req)
         
         elapsed = time.time() - start_time
         
@@ -59,39 +81,24 @@ class AgentPipeline:
         
         return result
     
-    async def execute_parallel(self, tasks: List[Dict[str, Any]], description: str = None) -> List[str]:
-        """并行执行多个步骤"""
+    async def execute_parallel(self, tasks: List[Dict[str, Any]], description: str | None = None) -> List[str]:
+        """并行执行多个步骤。
+        简化: 直接为每个任务创建消费协程, 而不是先收集生成器再逐个迭代。"""
         desc = description or "并行执行任务"
         print(f"\n🔄 {desc}...")
         print(f"  📊 任务数量: {len(tasks)}")
         
         start_time = time.time()
         
-        # 创建所有任务
-        async_tasks = []
-        for task in tasks:
-            agent_name = task['agent']
-            message = task['message']
-            
+        # 创建消费任务 (真正并行处理事件流)
+        async def _run_single(agent_name: str, message: str) -> str:
             if agent_name not in self.agents:
                 raise ValueError(f"Agent {agent_name} 不存在")
-            
-            msg = create_text_message_object(message)
-            async_tasks.append(self.agents[agent_name].send_message(msg))
-        
-        # 并行执行
-        results = await asyncio.gather(*async_tasks)
-        
-        # 提取结果
-        outputs = []
-        for result in results:
-            text = ""
-            async for event in result:
-                if hasattr(event, 'parts'):
-                    for part in event.parts:
-                        if hasattr(part.root, 'text'):
-                            text = part.root.text
-            outputs.append(text)
+            req = _build_text_message(message)
+            return await _send_and_extract(self.agents[agent_name], req)
+
+        async_tasks = [asyncio.create_task(_run_single(t['agent'], t['message'])) for t in tasks]
+        outputs = await asyncio.gather(*async_tasks)
         
         elapsed = time.time() - start_time
         
@@ -138,9 +145,11 @@ async def main():
     print("示例 4: 复杂管道 - 完整的 Agent 协作工作流")
     print("="*80)
     
+    httpx_client = httpx.AsyncClient(timeout=httpx.Timeout(30.0))
+
     try:
-        # 创建管道
-        pipeline = AgentPipeline()
+        # 创建管道 (共享 httpx client)
+        pipeline = AgentPipeline(httpx_client=httpx_client)
         
         # 步骤 1: 初始化管道
         print("\n📡 步骤 1: 初始化 Agent 管道...")
@@ -213,14 +222,12 @@ async def main():
         print(translation)
         print("="*80)
         
-    except ConnectionError as e:
-        print(f"\n❌ 连接失败: {e}")
-        print("\n💡 请确保所有 Agent 服务正在运行")
-    
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"\n❌ 发生错误: {e}")
         import traceback
         traceback.print_exc()
+    finally:
+        await httpx_client.aclose()
 
 
 def print_summary():
