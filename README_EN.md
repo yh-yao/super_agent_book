@@ -1,4 +1,4 @@
-# Super Agent Book (Multi-Scenario AI Agents Collection)
+# Build AI Agents from Scratch: LLM‑Driven Agent Design and Practice
 
 <p align="right">Language: <a href="README.md">中文</a> | <b>English</b></p>
 
